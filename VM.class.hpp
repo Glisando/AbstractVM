@@ -26,10 +26,10 @@ class VM
 
 public:
   typedef void (VM::*Val)(std::string &, eOperandType &);
-  // typedef void (VM::*No_val)(void);
+  typedef void (VM::*No_val)(void);
 
   std::map<std::string, Val> vmap;
-  // std::vector<No_val> nmap = {&VM::pop, &VM::dump, &VM::add, &VM::sub, &VM::mul, &VM::div, &VM::mod, &VM::print, &VM::exit};
+  std::map<std::string, No_val> nmap;
 
   std::vector<const IOperand *> stack;
 
@@ -41,13 +41,15 @@ public:
 
   void start(std::string const &file);
   int check_push_assert(std::string const &input, eOperandType &type);
+  int check_other(std::string const &input, eOperandType &type);
+
   void push(std::string &value, eOperandType &type);
   void assert(std::string &value, eOperandType &type);
   // void      setOperand(IOperand &ref);
   // IOperand  &getOperand(void);
   // void   pop(void);
   // void   dump(void);
-  // void   add(void);
+  void   add(void);
   // void   sub(void);
   // void   mul(void);
   // void   div(void);
