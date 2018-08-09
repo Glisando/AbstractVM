@@ -5,14 +5,13 @@
 # include "Number.class.hpp"
 # include "Factory.class.hpp"
 
-# include <string>
 # include <iostream>
 # include <regex>
 # include <fstream>
 # include <vector>
 # include <map>
 # include <iomanip>
-# include <strstream>
+# include <sstream>
 
 // enum Precision {
 

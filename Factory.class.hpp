@@ -4,7 +4,7 @@
 # include "VM.class.hpp"
 
 class Factory {
-
+    
     public:
         Factory();
         Factory(Factory const &ref);

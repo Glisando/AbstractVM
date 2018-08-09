@@ -27,6 +27,6 @@ void VM::add(void)
     const IOperand *p2 = *it;
     this->stack.pop_back();
 
-    const IOperand *res = p1 + p2;
+    const IOperand *res = *p1 + *p2;
     this->stack.push_back(res);
 }
