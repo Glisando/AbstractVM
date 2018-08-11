@@ -24,7 +24,10 @@ template <typename T> eOperandType Number<T>::getType(void) const {
 
 template <typename T> int Number<T>::getPrecision(void) const {
 
-
+    if (_type == Float)
+        return (7);
+    else if (_type == Double)
+        return (14);
     return (0);
 }
 
@@ -32,6 +35,10 @@ template <typename T> std::string const &Number<T>::toString(void) const {
 
     return (this->_value);
 }
+
+/////////////////////////////////////////////////////////////////
+//////////////////////////// Overloads //////////////////////////
+/////////////////////////////////////////////////////////////////
 
 template <typename T> IOperand const *Number<T>::operator+(IOperand const &rhs) const {
     
@@ -53,19 +60,84 @@ template <typename T> IOperand const *Number<T>::operator+(IOperand const &rhs) 
     }
 }
 
-template <typename T> bool Number<T>::operator==(IOperand const &rhs) const {
+template <typename T> IOperand const *Number<T>::operator-(IOperand const &rhs) const {
+    
+    eOperandType tp = this->_type > rhs.getType() ?  this->_type : rhs.getType();
 
-    if (rhs.toString() == this->_value && rhs.getType() == this->_type)
-    {
-        std::cout << "truuuuuuue" << std::endl;           
-        return (true);
+    if (this->_type < Float && rhs.getType() < Float)
+    {   
+        long res = std::stol(this->_value) - std::stol(rhs.toString());
+        const IOperand *nw = Factory().createOperand(tp, std::to_string(res));
+        return (nw);
     }
     else
     {
-        std::cout << "faaaalse" << std::endl;   
-        return (false);
+        long double res = std::stold(this->_value) - std::stold(rhs.toString());
+        const IOperand *nw = Factory().createOperand(tp, std::to_string(res));
+        return (nw);
     }
-    return (false);
+}
+
+template <typename T> IOperand const *Number<T>::operator*(IOperand const &rhs) const {
+
+    eOperandType tp = this->_type > rhs.getType() ?  this->_type : rhs.getType();
+
+    if (this->_type < Float && rhs.getType() < Float)
+    {
+        long res = std::stol(this->_value) * std::stol(rhs.toString());
+        const IOperand *nw = Factory().createOperand(tp, std::to_string(res));
+        return (nw);
+    }
+    else
+    {
+        long double res = std::stold(this->_value) * std::stold(rhs.toString());
+        const IOperand *nw = Factory().createOperand(tp, std::to_string(res));
+        return (nw);
+    }
+}
+
+template <typename T> IOperand const *Number<T>::operator/(IOperand const &rhs) const {
+
+    eOperandType tp = this->_type > rhs.getType() ?  this->_type : rhs.getType();
+
+    if (this->_type < Float && rhs.getType() < Float)
+    {
+        long res = std::stol(this->_value) / std::stol(rhs.toString());
+        const IOperand *nw = Factory().createOperand(tp, std::to_string(res));
+        return (nw);
+    }
+    else
+    {
+        long double res = std::stold(this->_value) / std::stold(rhs.toString());
+        const IOperand *nw = Factory().createOperand(tp, std::to_string(res));
+        return (nw);
+    }
+}
+
+template <typename T> IOperand const *Number<T>::operator%(IOperand const &rhs) const {
+
+    eOperandType tp = this->_type > rhs.getType() ?  this->_type : rhs.getType();
+
+    if (this->_type < Float || rhs.getType() < Float)
+    {
+        long res = std::stol(this->_value) % std::stol(rhs.toString());
+        const IOperand *nw = Factory().createOperand(tp, std::to_string(res));
+        return (nw);
+    }
+    else
+    {
+        long double res = fmod(std::stold(this->_value), std::stold(rhs.toString()));
+        const IOperand *nw = Factory().createOperand(tp, std::to_string(res));
+        return (nw);
+    }
+}
+
+template <typename T> bool Number<T>::operator==(IOperand const &rhs) const {
+
+    if (rhs.toString() == this->_value && rhs.getType() == this->_type)
+        return (true);
+    else
+        return (false);
 }
 
 template class Number<char>;

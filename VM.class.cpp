@@ -6,6 +6,14 @@ VM::VM(void) {
     this->vmap["assert"] = &VM::assert;
 
     this->nmap["add"] = &VM::add;
+    this->nmap["sub"] = &VM::sub;
+    this->nmap["pop"] = &VM::pop;
+    this->nmap["dump"] = &VM::dump;
+    this->nmap["print"] = &VM::print;
+    this->nmap["mul"] = &VM::mul;
+    this->nmap["div"] = &VM::div;
+    this->nmap["mod"] = &VM::mod;
+    
     //
 }
 
@@ -31,18 +39,19 @@ void VM::start(std::string const &file) {
     eOperandType type;
 
     if (ifs.good())
+    {
+        esc = "exit"
         std::cin.rdbuf(ifs.rdbuf());
+    }
+    else
+        esc = ";;";
     while (std::getline(std::cin, input))
     {
         if (!(check_push_assert(input, type)))
-            std::cout << "// check push assert commands ..." << std::endl;
+            std::cout << std::endl;
         else if (!(check_other(input, type)))
-            std::cout << "// check other commands ..." << std::endl;        
-        // else {
-        //     std::vector<const IOperand *>::iterator lol = this->stack.end();
-        //     lol--;
-        //     std::cout << (*lol)->toString() << std::endl;
-        // }
+            std::cout << std::endl;
+        else if (input == esc)
     }
 }
 
@@ -54,10 +63,6 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
 
     if (std::regex_match(input.c_str(), result, regular_decimal))
     {
-        for (size_t i = 1; i < result.size(); i++)
-        {
-            std::cout << result[i] << std::endl;
-        }
         if (result[2] == "int8")
             type = Int8;
         else if (result[2] == "int16")
@@ -70,8 +75,8 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
         }
         if (this->vmap.find(result[1]) != this->vmap.end())
         {
-
             std::string value = result[3];
+            std::cout << "// " << result[1] << std::endl;            
             (this->*vmap[result[1]])(value, type);
         }
         else
@@ -79,17 +84,14 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
     }
     else if (std::regex_match(input.c_str(), result, regulear_float))
     {
-        for (size_t i = 1; i < result.size(); i++)
-        {
-            std::cout << result[i] << std::endl;
-        }
         if (result[2] == "float")
             type = Float;
         else if (result[2] == "double")
             type = Double;
-        if (this->vmap.find(result[1]) != this->vmap.end()) {
-
+        if (this->vmap.find(result[1]) != this->vmap.end())
+        {
             std::string value = result[3];
+            std::cout << "// " << result[1] << std::endl;            
             (this->*vmap[result[1]])(value, type);
         }
         else
@@ -103,33 +105,14 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
 int VM::check_other(std::string const &input, eOperandType &type)
 {
     std::cmatch result;
-    std::regex  regular_decimal("^\\s*(\\bpop|dump|sub|add|mul|div|mod|print|exit\\b)\\s*(;\\w+)?");
-    std::regex  regulear_float("^\\s*(\\bpop|dump|sub|add|mul|div|mod|print|exit\\b)\\s*(;\\w+)?");
+    std::regex  regular("^\\s*(\\bpop|dump|sub|add|mul|div|mod|print|exit\\b)\\s*(;\\w+)?");
 
-    if (std::regex_match(input.c_str(), result, regular_decimal))
+    if (std::regex_match(input.c_str(), result, regular))
     {
-        for (size_t i = 1; i < result.size(); i++)
-        {
-            std::cout << result[i] << std::endl;
-        }
         if (this->nmap.find(result[1]) != this->nmap.end())
         {
-
             std::string value = result[3];
-            (this->*nmap[result[1]])();
-        }
-        else
-            std::cout << "throw();" << std::endl;
-    }
-    else if (std::regex_match(input.c_str(), result, regulear_float))
-    {
-        for (size_t i = 1; i < result.size(); i++)
-        {
-            std::cout << result[i] << std::endl;
-        }
-        if (this->nmap.find(result[1]) != this->nmap.end()) {
-
-            std::string value = result[3];
+            std::cout << "// " << result[1] << std::endl;
             (this->*nmap[result[1]])();
         }
         else

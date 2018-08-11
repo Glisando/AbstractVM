@@ -18,6 +18,8 @@ public:
   typedef void (VM::*Val)(std::string &, eOperandType &);
   typedef void (VM::*No_val)(void);
 
+  std::string esc;
+  
   std::map<std::string, Val> vmap;
   std::map<std::string, No_val> nmap;
 
@@ -35,16 +37,15 @@ public:
 
   void push(std::string &value, eOperandType &type);
   void assert(std::string &value, eOperandType &type);
-  // void      setOperand(IOperand &ref);
-  // IOperand  &getOperand(void);
-  // void   pop(void);
-  // void   dump(void);
+
+  void   pop(void);
+  void   dump(void);
   void   add(void);
-  // void   sub(void);
-  // void   mul(void);
-  // void   div(void);
-  // void   mod(void);
-  // void   print(void);
+  void   sub(void);
+  void   mul(void);
+  void   div(void);
+  void   mod(void);
+  void   print(void);
   // void   exit(void);
 
 };

@@ -6,6 +6,7 @@
 
 # include <vector>
 # include <iostream>
+# include <cmath>
 
 template <typename T>
 
@@ -37,21 +38,13 @@ class Number : public IOperand
 
     bool operator==(IOperand const &rhs) const;
     
-    // IOperand const *operator-(IOperand const &rhs) const {
-    //   return (Number(this->_num - rhs._num));
-    // }
+    IOperand const *operator-(IOperand const &rhs) const;
     
-    // IOperand const *operator*(IOperand const &rhs) const {
-    //   return (Number(this->_num * rhs._num));
-    // }
+    IOperand const *operator*(IOperand const &rhs) const;
     
-    // IOperand const *operator/(IOperand const &rhs) const {
-    //   return (Number(this->_num / rhs._num));
-    // }
+    IOperand const *operator/(IOperand const &rhs) const;
     
-    // IOperand const *operator%(IOperand const &rhs) const {
-    //   return (Number(this->_num % rhs._num));
-    // }
+    IOperand const *operator%(IOperand const &rhs) const;
 };
 
 #endif
