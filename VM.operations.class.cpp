@@ -1,32 +1,38 @@
 #include "VM.class.hpp"
 
 void VM::push(std::string &value, eOperandType &type) {
-
-    Factory *fac = new Factory();
     
-    this->stack.push_back(fac->createOperand(type, value));
-    delete fac;
+    this->stack.push_back(Factory().createOperand(type, value));
 }
 
 void VM::assert(std::string &value, eOperandType &type)
 {
+    const IOperand *x = stack.back();;
 
-    Factory *fac = new Factory();
-    this->stack.push_back(fac->createOperand(type, value));
-    delete fac;
+    const IOperand *y = Factory().createOperand(type, value);
+
+    if (*x == *y)
+        std::cout << (*x).toString() << "uraa" << std::endl;
+    else
+        std::cout << "throw(assert);" << std::endl;
+        
 }
 
 void VM::add(void)
 {
-    std::vector<const IOperand *>::iterator it = this->stack.end();
-    --it;
-    const IOperand *p1 = *it;
-    this->stack.pop_back();
-    it = this->stack.end();
-    --it;
-    const IOperand *p2 = *it;
+    const IOperand *p1 = this->stack.back();
     this->stack.pop_back();
 
-    const IOperand *res = *p1 + *p2;
+    const IOperand *p2 = this->stack.back();
+    this->stack.pop_back();
+
+    const IOperand *res = *p2 + *p1;
     this->stack.push_back(res);
+
+    std::vector<const IOperand *>::iterator lol = this->stack.end();
+    lol--;
+    std::cout << (*lol)->toString() << std::endl;
+
+    delete p1;
+    delete p2;    
 }

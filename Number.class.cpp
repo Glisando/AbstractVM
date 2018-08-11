@@ -1,4 +1,4 @@
-#include "VM.class.hpp"
+# include "Number.class.hpp"
 
 template <typename T> Number<T>::Number() {}
 template <typename T> Number<T>::Number(eOperandType type, T num, std::string val) : _type(type), _num(num), _value(val) {}
@@ -53,8 +53,23 @@ template <typename T> IOperand const *Number<T>::operator+(IOperand const &rhs) 
     }
 }
 
-// template class Number<char>;
-// template class Number<short>;
-// template class Number<int>;
-// template class Number<float>;
-// template class Number<double>;
+template <typename T> bool Number<T>::operator==(IOperand const &rhs) const {
+
+    if (rhs.toString() == this->_value && rhs.getType() == this->_type)
+    {
+        std::cout << "truuuuuuue" << std::endl;           
+        return (true);
+    }
+    else
+    {
+        std::cout << "faaaalse" << std::endl;   
+        return (false);
+    }
+    return (false);
+}
+
+template class Number<char>;
+template class Number<short>;
+template class Number<int>;
+template class Number<float>;
+template class Number<double>;

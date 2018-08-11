@@ -1,11 +1,11 @@
 #include "VM.class.hpp"
 
-VM::VM() {
+VM::VM(void) {
 
-    vmap.emplace("push", &VM::push);
-    vmap.emplace("assert", &VM::assert);
+    this->vmap["push"] = &VM::push;
+    this->vmap["assert"] = &VM::assert;
 
-    nmap.emplace("add", &VM::add);
+    this->nmap["add"] = &VM::add;
     //
 }
 
@@ -34,15 +34,15 @@ void VM::start(std::string const &file) {
         std::cin.rdbuf(ifs.rdbuf());
     while (std::getline(std::cin, input))
     {
-        if ((check_push_assert(input, type)))
-            std::cout << "// check push asas commands ..." << std::endl;
-        else if ((check_other(input, type)))
-            std::cout << "// check push asas commands ..." << std::endl;        
-        else {
-            std::vector<const IOperand *>::iterator lol = this->stack.end();
-            lol--;
-            std::cout << (*lol)->toString() << std::endl;
-        }
+        if (!(check_push_assert(input, type)))
+            std::cout << "// check push assert commands ..." << std::endl;
+        else if (!(check_other(input, type)))
+            std::cout << "// check other commands ..." << std::endl;        
+        // else {
+        //     std::vector<const IOperand *>::iterator lol = this->stack.end();
+        //     lol--;
+        //     std::cout << (*lol)->toString() << std::endl;
+        // }
     }
 }
 
@@ -59,11 +59,11 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
             std::cout << result[i] << std::endl;
         }
         if (result[2] == "int8")
-            type = eOperandType::Int8;
+            type = Int8;
         else if (result[2] == "int16")
-            type = eOperandType::Int16;
+            type = Int16;
         else if (result[2] == "int32")
-            type = eOperandType::Int32;
+            type = Int32;
         else {
             std::cout << "throw();" << std::endl;
             return (1);
@@ -84,9 +84,9 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
             std::cout << result[i] << std::endl;
         }
         if (result[2] == "float")
-            type = eOperandType::Float;
+            type = Float;
         else if (result[2] == "double")
-            type = eOperandType::Double;
+            type = Double;
         if (this->vmap.find(result[1]) != this->vmap.end()) {
 
             std::string value = result[3];
@@ -103,24 +103,14 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
 int VM::check_other(std::string const &input, eOperandType &type)
 {
     std::cmatch result;
-    std::regex  regular_decimal("^\\s*(\\bpop|dump|sub|add|mul|div|mod|print|exit\\b)\\s+(int[8,16,32]{1,2}\\b)\\(([-]?\\d+)\\)\\s*(;\\w+)?");
-    std::regex  regulear_float("^\\s*(\\bpop|dump|sub|add|mul|div|mod|print|exit\\b)\\s+(float|double)\\(([-]?\\d+\\.\\d+)\\)\\s*(;\\w+)?");
+    std::regex  regular_decimal("^\\s*(\\bpop|dump|sub|add|mul|div|mod|print|exit\\b)\\s*(;\\w+)?");
+    std::regex  regulear_float("^\\s*(\\bpop|dump|sub|add|mul|div|mod|print|exit\\b)\\s*(;\\w+)?");
 
     if (std::regex_match(input.c_str(), result, regular_decimal))
     {
         for (size_t i = 1; i < result.size(); i++)
         {
             std::cout << result[i] << std::endl;
-        }
-        if (result[2] == "int8")
-            type = eOperandType::Int8;
-        else if (result[2] == "int16")
-            type = eOperandType::Int16;
-        else if (result[2] == "int32")
-            type = eOperandType::Int32;
-        else {
-            std::cout << "throw();" << std::endl;
-            return (1);
         }
         if (this->nmap.find(result[1]) != this->nmap.end())
         {
@@ -137,10 +127,6 @@ int VM::check_other(std::string const &input, eOperandType &type)
         {
             std::cout << result[i] << std::endl;
         }
-        if (result[2] == "float")
-            type = eOperandType::Float;
-        else if (result[2] == "double")
-            type = eOperandType::Double;
         if (this->nmap.find(result[1]) != this->nmap.end()) {
 
             std::string value = result[3];

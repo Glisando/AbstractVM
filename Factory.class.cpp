@@ -2,6 +2,11 @@
 
 Factory::Factory() {
 
+    create.push_back(&Factory::createInt8);
+    create.push_back(&Factory::createInt16);
+    create.push_back(&Factory::createInt32);
+    create.push_back(&Factory::createFloat);
+    create.push_back(&Factory::createDouble); 
 }
 
 Factory::Factory(Factory const &ref) {
@@ -21,9 +26,7 @@ Factory &Factory::operator=(Factory const &ref) {
 
 IOperand const *Factory::createOperand(eOperandType type, std::string const &value) const
 {
-    typedef IOperand const *(Factory::*Create)(std::string const &) const;
-    Create crt[5] = {&Factory::createInt8, &Factory::createInt16, &Factory::createInt32, &Factory::createFloat, &Factory::createDouble};
-    return ((this->*crt[type])(value));
+    return ((*this.*create.at(type))(value));
 }
 
 IOperand const *Factory::createInt8(std::string const &value) const

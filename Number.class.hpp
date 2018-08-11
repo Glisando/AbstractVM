@@ -1,15 +1,16 @@
 #ifndef NUMBER_CLASS_HPP
 # define NUMBER_CLASS_HPP
 
-# include "VM.class.hpp"
+# include "IOperand.hpp"
 # include "Factory.class.hpp"
+
+# include <vector>
+# include <iostream>
 
 template <typename T>
 
 class Number : public IOperand
 {
-
-  class Factory;
 
   private:
     eOperandType  _type;
@@ -33,6 +34,8 @@ class Number : public IOperand
     virtual std::string const &toString(void) const;
 
     IOperand const *operator+(IOperand const &rhs) const;
+
+    bool operator==(IOperand const &rhs) const;
     
     // IOperand const *operator-(IOperand const &rhs) const {
     //   return (Number(this->_num - rhs._num));

@@ -5,20 +5,11 @@
 # include "Number.class.hpp"
 # include "Factory.class.hpp"
 
+# include <map>
+# include <vector>
 # include <iostream>
 # include <regex>
 # include <fstream>
-# include <vector>
-# include <map>
-# include <iomanip>
-# include <sstream>
-
-// enum Precision {
-
-//   Int = 0,
-//   Float = 7,
-//   Double = 16,
-// };
 
 class VM
 {
