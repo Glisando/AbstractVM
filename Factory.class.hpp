@@ -1,6 +1,7 @@
 #ifndef FACTORY_CLASS_HPP
 # define FACTORY_CLASS_HPP
 
+# include "Exception.class.hpp"
 # include "Number.class.hpp"
 
 # include <vector>
@@ -18,7 +19,7 @@ class Factory {
 
         IOperand const *createOperand(eOperandType type, std::string const &value) const;
 
-      private:
+    private:
         IOperand const *createInt8(std::string const &value) const;
         IOperand const *createInt16(std::string const &value) const;
         IOperand const *createInt32(std::string const &value) const;

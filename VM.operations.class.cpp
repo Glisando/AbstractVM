@@ -9,7 +9,7 @@ void VM::assert(std::string &value, eOperandType &type)
 {
     if (stack.size() < 1)
     {
-        std::cout << "Error: operation: assert: less that one values in stack" << std::endl;
+        Err("Error: operation: assert: less that one values in stack");
         return ;        
     }
     const IOperand *x = stack.back();;
@@ -18,14 +18,14 @@ void VM::assert(std::string &value, eOperandType &type)
 
     if (x == NULL)
     {
-        std::cout << "Error: operation: assert: unstack NULL operand pointer" << std::endl;
+        Err("Error: operation: assert: unstack NULL operand pointer");
         return ;
     }
 
     if (*x == *y)
-        std::cout << (*x).toString() << std::endl;
+        void(0);
     else
-        std::cout << "Error: operation: assert: An assert instruction is not true" << std::endl;
+        Err("Error: operation: assert: An assert instruction is not true");
 
     delete y;
 }
@@ -34,7 +34,7 @@ void VM::add(void)
 {
     if (stack.size() < 2)
     {
-        std::cout << "Error: operation: add: less that two values in stack" << std::endl;
+        Err("Error: operation: add: less that two values in stack");
         return ;        
     }
 
@@ -46,16 +46,12 @@ void VM::add(void)
 
     if (p1 == NULL || p2 == NULL)
     {
-        std::cout << "Error: operation: add: unstack NULL operand pointer" << std::endl;
+       Err("Error: operation: add: unstack NULL operand pointer");
         return ;
     }
 
     const IOperand *res = *p2 + *p1;
     this->stack.push_back(res);
-
-    std::vector<const IOperand *>::iterator lol = this->stack.end();
-    lol--;
-    std::cout << (*lol)->toString() << std::endl;
 
     delete p1;
     delete p2;    
@@ -65,7 +61,7 @@ void VM::sub(void)
 {
     if (stack.size() < 2)
     {
-        std::cout << "Error: operation: sub: less that two values in stack" << std::endl;
+       Err("Error: operation: sub: less that two values in stack");
         return ;
     }
 
@@ -77,16 +73,12 @@ void VM::sub(void)
 
     if (p1 == NULL || p2 == NULL)
     {
-        std::cout << "Error: operation: sub: unstack NULL operand pointer" << std::endl;
+       Err("Error: operation: sub: unstack NULL operand pointer");
         return ;
     }
 
     const IOperand *res = *p2 - *p1;
     this->stack.push_back(res);
-
-    std::vector<const IOperand *>::iterator lol = this->stack.end();
-    lol--;
-    std::cout << (*lol)->toString() << std::endl;
 
     delete p1;
     delete p2;    
@@ -96,7 +88,7 @@ void VM::pop(void)
 {
     if (stack.size() < 1)
     {
-        std::cout << "Error: operation: pop: pop on an empty stack" << std::endl;
+        Err("Error: operation: pop: pop on an empty stack");
         return ;
     }
 
@@ -111,7 +103,7 @@ void   VM::dump(void)
 {
     if (stack.size() < 1)
     {
-        std::cout << "Error: operation: dump: less that one values in stack" << std::endl;
+        Err("Error: operation: dump: less that one values in stack");
         return ;
     }
 
@@ -120,7 +112,7 @@ void   VM::dump(void)
     {
         if (stack[i] == NULL)
         {
-            std::cout << "Error: operation: dump: unstack NULL operand pointer" << std::endl;
+            Err("Error: operation: dump: unstack NULL operand pointer");
             return ;
         }
         std::cout << stack[i]->toString() << std::endl;
@@ -132,7 +124,7 @@ void   VM::print(void)
 {
     if (stack.size() < 1)
     {
-        std::cout << "Error: operation: print: less that one values in stack" << std::endl;
+        Err("Error: operation: print: less that one values in stack");
         return ;
     }
     
@@ -141,12 +133,12 @@ void   VM::print(void)
 
     if (ptr == NULL)
     {
-        std::cout << "Error: operation: print: unstack NULL operand pointer" << std::endl;
+        Err("Error: operation: print: unstack NULL operand pointer");
         return ;
     }
     if (ptr->getType() != Int8)
     {
-        std::cout << "Error: operation: print: bad number type" << std::endl;
+        Err("Error: operation: print: bad number type");
         return ;
     }
     std::cout << static_cast<char>(std::stof(ptr->toString())) << std::endl;
@@ -156,7 +148,7 @@ void VM::mul(void)
 {
     if (stack.size() < 2)
     {
-        std::cout << "Error: operation: mul: less that two values in stack" << std::endl;
+        Err("Error: operation: mul: less that two values in stack");
         return ;
     }
 
@@ -168,15 +160,11 @@ void VM::mul(void)
 
     if (p1 == NULL || p2 == NULL)
     {
-        std::cout << "Error: operation: mul: unstack NULL operand pointer" << std::endl;
+        Err("Error: operation: mul: unstack NULL operand pointer");
         return ;
     }
     const IOperand *res = *p2 * *p1;
     this->stack.push_back(res);
-
-    std::vector<const IOperand *>::iterator lol = this->stack.end();
-    lol--;
-    std::cout << (*lol)->toString() << std::endl;
 
     delete p1;
     delete p2;  
@@ -186,7 +174,7 @@ void VM::div(void)
 {
     if (stack.size() < 2)
     {
-        std::cout << "Error: operation: div: less that two values in stack" << std::endl;
+        Err("Error: operation: div: less that two values in stack");
         return ;
     }
 
@@ -198,21 +186,17 @@ void VM::div(void)
 
     if (p1 == NULL || p2 == NULL)
     {
-        std::cout << "Error: operation: div: unstack NULL operand pointer" << std::endl;
+       Err("Error: operation: div: unstack NULL operand pointer");
         return ;
     }
     else if (p1->toString() == "0")
     {
-        std::cout << "Error: operation: div: division by zero" << std::endl;
+       Err("Error: operation: div: division by zero");
         return ;        
     }
 
     const IOperand *res = *p2 / *p1;
     this->stack.push_back(res);
-
-    std::vector<const IOperand *>::iterator lol = this->stack.end();
-    lol--;
-    std::cout << (*lol)->toString() << std::endl;
 
     delete p1;
     delete p2;  
@@ -222,7 +206,7 @@ void VM::mod(void)
 {
     if (stack.size() < 2)
     {
-        std::cout << "Error: operation: mod: less that two values in stack" << std::endl;
+        Err("Error: operation: mod: less that two values in stack");
         return ;
     }
 
@@ -234,22 +218,32 @@ void VM::mod(void)
 
     if (p1 == NULL || p2 == NULL)
     {
-        std::cout << "Error: operation: mod: unstack NULL operand pointer" << std::endl;
+        Err("Error: operation: mod: unstack NULL operand pointer");
         return ;
     }
     else if (p1->toString() == "0")
     {
-        std::cout << "Error: operation: mod: modulo by zero" << std::endl;
+        Err("Error: operation: mod: modulo by zero");
         return ;
     }
     
     const IOperand *res = *p2 % *p1;
     this->stack.push_back(res);
 
-    std::vector<const IOperand *>::iterator lol = this->stack.end();
-    lol--;
-    std::cout << (*lol)->toString() << std::endl;
-
     delete p1;
     delete p2;
+}
+
+void   VM::ex(std::string &input)
+{
+    clear_stack();
+    exit(0);
+}
+
+void VM::clear_stack(void)
+{
+    for (size_t i = 0; i < stack.size(); i++)
+    {
+        delete stack[i];
+    }
 }

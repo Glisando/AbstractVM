@@ -3,6 +3,7 @@
 
 # include "IOperand.hpp"
 # include "Number.class.hpp"
+# include "Exception.class.hpp"
 # include "Factory.class.hpp"
 
 # include <map>
@@ -34,6 +35,7 @@ public:
   void start(std::string const &file);
   int check_push_assert(std::string const &input, eOperandType &type);
   int check_other(std::string const &input, eOperandType &type);
+  void clear_stack(void);
 
   void push(std::string &value, eOperandType &type);
   void assert(std::string &value, eOperandType &type);
@@ -46,7 +48,7 @@ public:
   void   div(void);
   void   mod(void);
   void   print(void);
-  // void   exit(void);
+  void   ex(std::string &);
 
 };
 

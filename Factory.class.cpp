@@ -35,7 +35,7 @@ IOperand const *Factory::createInt8(std::string const &value) const
     char val = static_cast<char>(std::stoi(value));
     std::string check = std::to_string(val);
     if (value != check)
-        std::cout << "Type int8 - fucked up" << std::endl;
+        Err("Type int8 - fucked up");
     return (new Number<char>(Int8, val, value));
 }
 
@@ -45,7 +45,7 @@ IOperand const *Factory::createInt16(std::string const &value) const
     short val = static_cast<short>(std::stoi(value));
     std::string check = std::to_string(val);
     if (value != check)
-        std::cout << "Type int16 - fucked up" << std::endl;
+        Err("Type int16 - fucked up");
     return (new Number<short>(Int16, val, value));
 }
 
@@ -55,7 +55,7 @@ IOperand const *Factory::createInt32(std::string const &value) const
     int val = std::stoi(value);
     std::string check = std::to_string(val);
     if (value != check)
-        std::cout << "Type int32 - fucked up" << std::endl;
+        Err("Type int32 - fucked up");
     return (new Number<int>(Int32, val, value));
 }
 

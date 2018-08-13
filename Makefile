@@ -15,12 +15,13 @@ SRC =	main.cpp \
 		Number.class.cpp \
 		VM.class.cpp \
 		Factory.class.cpp \
-		VM.operations.class.cpp 
+		VM.operations.class.cpp \
+		Exception.class.cpp
 
 OBJ = $(SRC:.cpp=.o)
-HDRS = VM.class.hpp Factory.class.hpp Number.class.hpp IOperand.hpp
+HDRS = VM.class.hpp Factory.class.hpp Number.class.hpp IOperand.hpp Exception.class.hpp
 CLANG++ = clang++
-CL_FLAGS = -Wall -Werror -Wextra
+CL_FLAGS = -Wall -Werror -Wextra -H
 
 all: $(NAME)
 

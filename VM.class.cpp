@@ -40,18 +40,29 @@ void VM::start(std::string const &file) {
 
     if (ifs.good())
     {
-        esc = "exit"
+        esc = "exit";
         std::cin.rdbuf(ifs.rdbuf());
     }
     else
         esc = ";;";
-    while (std::getline(std::cin, input))
+
+    while (!std::cin.eof())
     {
-        if (!(check_push_assert(input, type)))
-            std::cout << std::endl;
-        else if (!(check_other(input, type)))
-            std::cout << std::endl;
-        else if (input == esc)
+        std::getline(std::cin, input);
+        try {
+            if (input == esc)
+                ex(input);
+            else if (!(check_push_assert(input, type)))
+                continue ;
+            else if (!(check_other(input, type)))
+                continue ;
+            else
+                Err("invalid string");
+        }
+        catch (std::exception &e)
+        {
+            std::cout << e.what() << std::endl;
+        }
     }
 }
 
@@ -59,7 +70,7 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
 {
     std::cmatch result;
     std::regex  regular_decimal("^\\s*(\\bpush|assert\\b)\\s+(int[8,16,32]{1,2}\\b)\\(([-]?\\d+)\\)\\s*(;\\w+)?");
-    std::regex  regulear_float("^\\s*(\\bpush|assert\\b)\\s+(float|double)\\(([-]?\\d+\\.\\d+)\\)\\s*(;\\w+)?");
+    std::regex  regular_float("^\\s*(\\bpush|assert\\b)\\s+(float|double)\\(([-]?\\d+\\.\\d+)\\)\\s*(;\\w+)?");
 
     if (std::regex_match(input.c_str(), result, regular_decimal))
     {
@@ -69,20 +80,14 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
             type = Int16;
         else if (result[2] == "int32")
             type = Int32;
-        else {
-            std::cout << "throw();" << std::endl;
-            return (1);
-        }
         if (this->vmap.find(result[1]) != this->vmap.end())
         {
             std::string value = result[3];
-            std::cout << "// " << result[1] << std::endl;            
+            // std::cout << "// " << result[1] << std::endl;         
             (this->*vmap[result[1]])(value, type);
-        }
-        else
-            std::cout << "throw();" << std::endl;        
+        }      
     }
-    else if (std::regex_match(input.c_str(), result, regulear_float))
+    else if (std::regex_match(input.c_str(), result, regular_float))
     {
         if (result[2] == "float")
             type = Float;
@@ -91,11 +96,9 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
         if (this->vmap.find(result[1]) != this->vmap.end())
         {
             std::string value = result[3];
-            std::cout << "// " << result[1] << std::endl;            
+            // std::cout << "// " << result[1] << std::endl;
             (this->*vmap[result[1]])(value, type);
         }
-        else
-            std::cout << "throw();" << std::endl;
     }
     else
         return (1);
@@ -111,14 +114,11 @@ int VM::check_other(std::string const &input, eOperandType &type)
     {
         if (this->nmap.find(result[1]) != this->nmap.end())
         {
-            std::string value = result[3];
-            std::cout << "// " << result[1] << std::endl;
+            // std::cout << "// " << result[1] << std::endl;
             (this->*nmap[result[1]])();
         }
-        else
-            std::cout << "throw();" << std::endl;
     }
     else
-        return (1);
+         Err("Error: invalid string");
     return (0);
 }
