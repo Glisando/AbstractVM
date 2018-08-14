@@ -15,35 +15,28 @@ class Number : public IOperand
 
   private:
     eOperandType  _type;
-    T             _num;
     std::string   _value;
 
   public:
     Number();
-    Number(eOperandType type, T num, std::string val);
+    Number(eOperandType type, std::string val);
     Number(Number const &ref);
     ~Number();
 
     Number &operator=(Number const &ref);
 
     void setType(eOperandType type);
-
     eOperandType getType(void) const;
-
     int getPrecision(void) const;
-
     virtual std::string const &toString(void) const;
 
-    IOperand const *operator+(IOperand const &rhs) const;
-
     bool operator==(IOperand const &rhs) const;
-    
-    IOperand const *operator-(IOperand const &rhs) const;
-    
+    bool operator>=(IOperand const &rhs) const;
+    bool operator<=(IOperand const &rhs) const;
+    IOperand const *operator+(IOperand const &rhs) const;    
+    IOperand const *operator-(IOperand const &rhs) const;    
     IOperand const *operator*(IOperand const &rhs) const;
-    
     IOperand const *operator/(IOperand const &rhs) const;
-    
     IOperand const *operator%(IOperand const &rhs) const;
 };
 

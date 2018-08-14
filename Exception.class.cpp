@@ -12,7 +12,7 @@ Exception::Exception(Exception const &ref) : std::runtime_error("no error")
 
 Exception::Exception(const std::string &err) : std::runtime_error(err)
 {
-    _err = err;
+    _err = "Line #" + std::to_string(line) + ": " + err;
 }
 
 Exception &Exception::operator=(Exception const &ref)

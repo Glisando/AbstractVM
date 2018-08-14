@@ -1,7 +1,7 @@
 # include "Number.class.hpp"
 
 template <typename T> Number<T>::Number() {}
-template <typename T> Number<T>::Number(eOperandType type, T num, std::string val) : _type(type), _num(num), _value(val) {}
+template <typename T> Number<T>::Number(eOperandType type, std::string val) : _type(type), _value(val) {}
 template <typename T> Number<T>::Number(Number const &ref) { *this = ref; }
 template <typename T> Number<T>::~Number() {}
 
@@ -118,7 +118,7 @@ template <typename T> IOperand const *Number<T>::operator%(IOperand const &rhs) 
 
     eOperandType tp = this->_type > rhs.getType() ?  this->_type : rhs.getType();
 
-    if (this->_type < Float || rhs.getType() < Float)
+    if (this->_type < Float && rhs.getType() < Float)
     {
         long res = std::stol(this->_value) % std::stol(rhs.toString());
         const IOperand *nw = Factory().createOperand(tp, std::to_string(res));
@@ -135,6 +135,22 @@ template <typename T> IOperand const *Number<T>::operator%(IOperand const &rhs) 
 template <typename T> bool Number<T>::operator==(IOperand const &rhs) const {
 
     if (rhs.toString() == this->_value && rhs.getType() == this->_type)
+        return (true);
+    else
+        return (false);
+}
+
+template <typename T> bool Number<T>::operator>=(IOperand const &rhs) const {
+
+    if (rhs.toString() >= this->_value && rhs.getType() >= this->_type)
+        return (true);
+    else
+        return (false);
+}
+
+template <typename T> bool Number<T>::operator<=(IOperand const &rhs) const {
+
+    if (rhs.toString() <= this->_value && rhs.getType() <= this->_type)
         return (true);
     else
         return (false);

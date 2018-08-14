@@ -1,4 +1,0 @@
-push int32(123)
-
-
-^\s*(\bpush|assert\b)\s+(int\d{1,2}\b)\(([-]?\d+)\)\s*(;\w+)?

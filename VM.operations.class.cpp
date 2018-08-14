@@ -9,10 +9,10 @@ void VM::assert(std::string &value, eOperandType &type)
 {
     if (stack.size() < 1)
     {
-        Err("Error: operation: assert: less that one values in stack");
+        Err("Error: operation: assert: less than one value in stack");
         return ;        
     }
-    const IOperand *x = stack.back();;
+    const IOperand *x = stack.back();
 
     const IOperand *y = Factory().createOperand(type, value);
 
@@ -34,7 +34,7 @@ void VM::add(void)
 {
     if (stack.size() < 2)
     {
-        Err("Error: operation: add: less that two values in stack");
+        Err("Error: operation: add: less than two values in stack");
         return ;        
     }
 
@@ -61,7 +61,7 @@ void VM::sub(void)
 {
     if (stack.size() < 2)
     {
-       Err("Error: operation: sub: less that two values in stack");
+       Err("Error: operation: sub: less than two values in stack");
         return ;
     }
 
@@ -89,7 +89,7 @@ void VM::pop(void)
     if (stack.size() < 1)
     {
         Err("Error: operation: pop: pop on an empty stack");
-        return ;
+        ex();
     }
 
     const IOperand *ptr = this->stack.back();
@@ -103,7 +103,7 @@ void   VM::dump(void)
 {
     if (stack.size() < 1)
     {
-        Err("Error: operation: dump: less that one values in stack");
+        Err("Error: operation: dump: less than one value in stack");
         return ;
     }
 
@@ -124,7 +124,7 @@ void   VM::print(void)
 {
     if (stack.size() < 1)
     {
-        Err("Error: operation: print: less that one values in stack");
+        Err("Error: operation: print: less than one value in stack");
         return ;
     }
     
@@ -148,7 +148,7 @@ void VM::mul(void)
 {
     if (stack.size() < 2)
     {
-        Err("Error: operation: mul: less that two values in stack");
+        Err("Error: operation: mul: less than two values in stack");
         return ;
     }
 
@@ -174,7 +174,7 @@ void VM::div(void)
 {
     if (stack.size() < 2)
     {
-        Err("Error: operation: div: less that two values in stack");
+        Err("Error: operation: div: less than two values in stack");
         return ;
     }
 
@@ -206,7 +206,7 @@ void VM::mod(void)
 {
     if (stack.size() < 2)
     {
-        Err("Error: operation: mod: less that two values in stack");
+        Err("Error: operation: mod: less than two values in stack");
         return ;
     }
 
@@ -236,6 +236,12 @@ void VM::mod(void)
 
 void   VM::ex(std::string &input)
 {
+    clear_stack(); 
+    exit(0);
+}
+
+void   VM::ex()
+{
     clear_stack();
     exit(0);
 }
@@ -246,4 +252,113 @@ void VM::clear_stack(void)
     {
         delete stack[i];
     }
+}
+
+void VM::max(void)
+{
+    if (stack.size() < 1)
+    {
+        Err("Error: operation: max: less than one value in stack");
+        return ;        
+    }
+
+    long double max = DBL_MIN;
+    long double tmp;
+    size_t ind = 0;
+
+    for (size_t i = 0; i < stack.size(); i++)
+    {
+        tmp = std::stold((stack[i])->toString());
+        if (tmp > max)
+        {
+            max = tmp;
+            ind = i;
+        }
+    }
+    std::cout << (stack[ind])->toString() << std::endl;
+}
+
+void VM::min(void)
+{
+    if (stack.size() < 1)
+    {
+        Err("Error: operation: max: less than one value in stack");
+        return ;        
+    }
+
+    long double max = DBL_MAX;
+    long double tmp;
+    size_t ind = 0;
+
+    for (size_t i = 0; i < stack.size(); i++)
+    {
+        tmp = std::stold((stack[i])->toString());
+        if (tmp < max)
+        {
+            max = tmp;
+            ind = i;
+        }
+    }
+    std::cout << (stack[ind])->toString() << std::endl;
+}
+
+void VM::rev(void)
+{
+    if (stack.size() < 1)
+    {
+        Err("Error: operation: max: less than one value in stack");
+        return ;        
+    }
+
+    std::vector<const IOperand *> ptr;
+    size_t i = stack.size() - 1;
+    while (i > 0)
+    {
+        ptr.push_back(stack[i]);
+        i--;
+    }
+    ptr.push_back(stack[i]);
+    stack = ptr;
+}
+
+void VM::more()
+{
+    if (stack.size() < 2)
+    {
+        Err("Error: operation: more: less than two values in stack");
+        return ;        
+    }
+    size_t x = stack.size() - 1;
+    size_t y = stack.size() - 2;
+    if (stack[x] == NULL || stack[y] == NULL)
+    {
+        Err("Error: operation: more: unstack NULL operand pointer");
+        return ;
+    }
+
+    if (*(stack[x]) >= *(stack[y]))
+        void(0);
+    else
+        Err("Error: operation: more: instruction is not true");
+}
+
+void VM::less()
+{
+    if (stack.size() < 2)
+    {
+        Err("Error: operation: less: less than two values in stack");
+        return ;        
+    }
+    size_t x = stack.size() - 1;
+    size_t y = stack.size() - 2;
+    if (stack[x] == NULL || stack[y] == NULL)
+    {
+        Err("Error: operation: less: unstack NULL operand pointer");
+        return ;
+    }
+
+    if (*(stack[x]) <= *(stack[y]))
+        void(0);
+    else
+        Err("Error: operation: less: instruction is not true");
 }

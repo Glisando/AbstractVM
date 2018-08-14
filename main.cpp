@@ -1,5 +1,7 @@
 #include "VM.class.hpp"
 
+int line;
+
 int main(int argc, char **argv)
 {
     VM avm;

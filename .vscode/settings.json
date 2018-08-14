@@ -52,7 +52,11 @@
         "system_error": "cpp",
         "optional": "cpp",
         "string_view": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "locale": "cpp",
+        "iterator": "cpp",
+        "__bit_reference": "cpp",
+        "atomic": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

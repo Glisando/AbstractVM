@@ -20,8 +20,8 @@ SRC =	main.cpp \
 
 OBJ = $(SRC:.cpp=.o)
 HDRS = VM.class.hpp Factory.class.hpp Number.class.hpp IOperand.hpp Exception.class.hpp
-CLANG++ = clang++
-CL_FLAGS = -Wall -Werror -Wextra -H
+CLANG++ = clang++ -g
+CL_FLAGS = -Wall -Werror -Wextra
 
 all: $(NAME)
 

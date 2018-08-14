@@ -30,55 +30,116 @@ IOperand const *Factory::createOperand(eOperandType type, std::string const &val
 }
 
 IOperand const *Factory::createInt8(std::string const &value) const
-{
-    // put next string in block try!
-    char val = static_cast<char>(std::stoi(value));
-    std::string check = std::to_string(val);
-    if (value != check)
-        Err("Type int8 - fucked up");
-    return (new Number<char>(Int8, val, value));
+{   
+    try
+    {
+        int val = std::stoi(value);
+        if (val > CHAR_MAX)
+        {
+            Err("Error: int8: overflow");
+        }
+        else if (val < CHAR_MIN)
+        {
+            Err("Error: int8: underflow");
+        }
+    }
+    catch (std::runtime_error &e)
+    {
+        std::cout << e.what() << std::endl;
+        exit(0);
+    } 
+    return (new Number<char>(Int8, value));
 }
 
 IOperand const *Factory::createInt16(std::string const &value) const
-{
-    // put next string in block try!
-    short val = static_cast<short>(std::stoi(value));
-    std::string check = std::to_string(val);
-    if (value != check)
-        Err("Type int16 - fucked up");
-    return (new Number<short>(Int16, val, value));
+{   
+    try
+    {
+        int val = std::stoi(value);
+
+        if (val > INT16_MAX)
+        {
+            Err("Error: int16: overflow");
+        }
+        if (val < INT16_MIN)
+        {
+            Err("Error: int16: underflow");
+        }
+    }
+    catch (std::runtime_error &e)
+    {
+        std::cout << e.what() << std::endl;
+        exit(0);
+    } 
+    return (new Number<short>(Int16, value));
 }
 
 IOperand const *Factory::createInt32(std::string const &value) const
 {
-    // put next string in block try!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    int val = std::stoi(value);
-    std::string check = std::to_string(val);
-    if (value != check)
-        Err("Type int32 - fucked up");
-    return (new Number<int>(Int32, val, value));
+    try
+    {
+        int val = std::stoi(value);
+
+        std::string check = std::to_string(val);
+    }
+    catch (std::exception &e)
+    {
+        std::cout << "Line #" << line << ": " << "Error: int32: overflow or underflow" << std::endl;
+        exit(0);
+    }
+    return (new Number<int>(Int32, value));
 }
 
 IOperand const *Factory::createFloat(std::string const &value) const
 {
-    // put next string in block try!
     std::stringstream deb(std::stringstream::out);
+    std::string str;
 
+    try
+    {
+        long double f = std::stold(value);
+        if (f > FLT_MAX)
+        {
+            Err("Error: float: overflow");
+        }
+        else if (f < -FLT_MAX)
+        {
+            Err("Error: float: underflow");      
+        }
+    }
+    catch (std::runtime_error &e)
+    {
+        std::cout << e.what() << std::endl;
+        exit(0);
+    }  
     deb << std::setprecision(7) << std::stof(value);
-
-    float f = std::stof(deb.str());
-    std::string str = deb.str();
-    return (new Number<float>(Float, f, str));
+    str = deb.str();
+    return (new Number<float>(Float, str));
 }
 
 IOperand const *Factory::createDouble(std::string const &value) const
 {
-    // put next string in block try!
     std::stringstream deb(std::stringstream::out);
+    std::string str;
 
+    try
+    {
+        long double ld = std::stold(value);
+        if (ld >= 9223372036854775807)
+        {
+            Err("Error: double: overflow");
+        }
+        else if (ld < -9223372036854775807)
+        {
+            Err("Error: double: underflow");
+        }
+    }
+    catch (std::runtime_error &e)
+    {
+        std::cout << e.what() << std::endl;
+        exit(0);
+    }
     deb << std::setprecision(14) << std::stod(value);
-
-    double ld = std::stod(deb.str());
-    std::string str = deb.str();    
-    return (new Number<double>(Double, ld, str));
+    str = deb.str();
+    return (new Number<double>(Double, str));
 }

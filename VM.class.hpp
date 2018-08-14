@@ -11,6 +11,11 @@
 # include <iostream>
 # include <regex>
 # include <fstream>
+# include <limits>
+# include <float.h>
+# include <cstddef>
+
+extern int line;
 
 class VM
 {
@@ -32,24 +37,29 @@ public:
 
   VM &operator=(VM const &ref);
 
-  void start(std::string const &file);
-  int check_push_assert(std::string const &input, eOperandType &type);
-  int check_other(std::string const &input, eOperandType &type);
-  void clear_stack(void);
+  void  start(std::string const &file);
+  int   check_push_assert(std::string const &input, eOperandType &type);
+  int   check_other(std::string const &input, eOperandType &type);
+  void  clear_stack(void);
 
-  void push(std::string &value, eOperandType &type);
-  void assert(std::string &value, eOperandType &type);
-
-  void   pop(void);
-  void   dump(void);
-  void   add(void);
-  void   sub(void);
-  void   mul(void);
-  void   div(void);
-  void   mod(void);
-  void   print(void);
-  void   ex(std::string &);
-
+  void  push(std::string &value, eOperandType &type);
+  void  assert(std::string &value, eOperandType &type);
+  void  pop(void);
+  void  dump(void);
+  void  add(void);
+  void  sub(void);
+  void  mul(void);
+  void  div(void);
+  void  mod(void);
+  void  print(void);
+  void  ex(std::string &);
+  void  ex();
+  // bonus
+  void  max(void);
+  void  min(void);
+  void  rev(void);
+  void  more(void);
+  void  less(void);
 };
 
 #endif

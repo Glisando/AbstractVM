@@ -3,10 +3,14 @@
 
 # include "Exception.class.hpp"
 # include "Number.class.hpp"
+# include "VM.class.hpp"
 
 # include <vector>
 # include <sstream>
 # include <iomanip>
+# include <limits>
+# include <float.h>
+# include <cstddef>
 
 class Factory {
     
