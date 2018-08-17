@@ -1,0 +1,8 @@
+push int8(33) ;!
+push int8(112) ;p
+more
+less
+rev
+more
+less
+exit
