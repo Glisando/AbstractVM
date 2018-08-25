@@ -25,6 +25,7 @@ public:
   typedef void (VM::*No_val)(void);
 
   std::string esc;
+  int         exiitt;
   
   std::map<std::string, Val> vmap;
   std::map<std::string, No_val> nmap;
@@ -53,12 +54,12 @@ public:
   void  mod(void);
   void  print(void);
   void  ex();
-  // bonus
+  // bonuses
   void  max(void);
   void  min(void);
   void  rev(void);
   void  more(void);
-  void  less(void);
+  void  swap(void);
 };
 
 #endif

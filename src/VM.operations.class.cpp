@@ -249,7 +249,6 @@ void VM::mod(void)
 void   VM::ex()
 {
     clear_stack();
-    system("leaks -q avm");
     exit(0);
 }
 
@@ -281,14 +280,14 @@ void VM::max(void)
             ind = i;
         }
     }
-    std::cout << (stack[ind])->toString() << std::endl;
+    std::cout << "\033[32m" << (stack[ind])->toString() << "\33[0m" << std::endl;
 }
 
 void VM::min(void)
 {
     if (stack.size() < 1)
     {
-        Err("Error: operation: max: less than one value in stack");
+        Err("Error: operation: min: less than one value in stack");
         return ;        
     }
 
@@ -305,14 +304,14 @@ void VM::min(void)
             ind = i;
         }
     }
-    std::cout << (stack[ind])->toString() << std::endl;
+    std::cout << "\033[32m" << (stack[ind])->toString() << "\33[0m" << std::endl;
 }
 
 void VM::rev(void)
 {
     if (stack.size() < 1)
     {
-        Err("Error: operation: max: less than one value in stack");
+        Err("Error: operation: rev: less than one value in stack");
         return ;        
     }
 
@@ -342,29 +341,30 @@ void VM::more()
         return ;
     }
 
-    if (*(stack[x]) >= *(stack[y]))
+    if (*(stack[y]) >= *(stack[x]))
         void(0);
     else
         Err("Error: operation: more: instruction is not true");
 }
 
-void VM::less()
+void VM::swap()
 {
     if (stack.size() < 2)
     {
-        Err("Error: operation: less: less than two values in stack");
+        Err("Error: operation: swap: less than two values in stack");
         return ;        
     }
     size_t x = stack.size() - 1;
     size_t y = stack.size() - 2;
     if (stack[x] == NULL || stack[y] == NULL)
     {
-        Err("Error: operation: less: unstack NULL operand pointer");
+        Err("Error: operation: swap: unstack NULL operand pointer");
         return ;
     }
-
-    if (*(stack[x]) <= *(stack[y]))
-        void(0);
-    else
-        Err("Error: operation: less: instruction is not true");
+    const IOperand *p1 = stack[stack.size() - 1];
+    const IOperand *p2 = stack[stack.size() - 2];
+    stack.pop_back();
+    stack.pop_back();
+    this->stack.push_back(p1);
+    this->stack.push_back(p2);
 }

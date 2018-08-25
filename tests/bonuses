@@ -1,8 +1,10 @@
 push int8(33) ;!
 push int8(112) ;p
 more
-less
+dump
 rev
+dump
 more
-less
+swap
+dump
 exit

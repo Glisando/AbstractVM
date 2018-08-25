@@ -147,11 +147,11 @@ IOperand const *Factory::createDouble(std::string const &value) const
     try
     {
         long double ld = std::stold(value);
-        if (ld >= 9223372036854775807)
+        if (ld >= DBL_MAX)
         {
             Err("Error: double: overflow");
         }
-        else if (ld < -9223372036854775807)
+        else if (ld < DBL_MIN)
         {
             Err("Error: double: underflow");
         }

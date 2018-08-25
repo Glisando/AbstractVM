@@ -1,6 +1,7 @@
 #include "../inc/VM.class.hpp"
 
-VM::VM(void) {
+VM::VM(void) : exiitt(0)
+{
 
     this->vmap["push"] = &VM::push;
     this->vmap["assert"] = &VM::assert;
@@ -17,7 +18,7 @@ VM::VM(void) {
     this->nmap["min"] = &VM::min;
     this->nmap["rev"] = &VM::rev;
     this->nmap["more"] = &VM::more;
-    this->nmap["less"] = &VM::less;
+    this->nmap["swap"] = &VM::swap;
     this->nmap["exit"] = &VM::ex;
 }
 
@@ -56,8 +57,12 @@ void VM::start(std::string const &file) {
         line++;
         try {
 
-            if (esc == ";;" && input == ";;")
+            if (esc == input)
+            {
+                if (exiitt == 0 && esc == ";;")
+                    Err("Error: no exit command");
                 ex();
+            }
             else if (!(check_push_assert(input, type)))
                 continue ;
             else if (!(check_other(input)))
@@ -70,21 +75,12 @@ void VM::start(std::string const &file) {
             std::cout << e.what() << std::endl;
         }
     }
-    try
-    {
-        Err("Error: no exit command");
-    }
-    catch (std::runtime_error &e)
-    {
-        std::cout << e.what() << std::endl;
-        ex();
-    }
 }
 
 int VM::check_push_assert(std::string const &input, eOperandType &type)
 {
     std::cmatch result;
-    std::regex  regular_decimal("^\\s*(\\bpush|assert\\b)\\s+(int[8,16,32]{1,2}\\b)\\(([-]?\\d+)\\)\\s*(;.*)?");
+    std::regex  regular_decimal("^\\s*(\\bpush|assert\\b)\\s+(int8|int16|int32\\b)\\(([-]?\\d+)\\)\\s*(;.*)?");
     std::regex  regular_float("^\\s*(\\bpush|assert\\b)\\s+(float|double)\\(([-]?\\d+\\.\\d+)\\)\\s*(;.*)?");
 
     if (std::regex_match(input.c_str(), result, regular_decimal))
@@ -121,7 +117,7 @@ int VM::check_push_assert(std::string const &input, eOperandType &type)
 int VM::check_other(std::string const &input)
 {
     std::cmatch result;
-    std::regex  regular("^\\s*(\\bpop|dump|sub|add|mul|div|mod|print|exit|max|min|rev|more|less|exit\\b)\\s*(;.*)?");
+    std::regex  regular("^\\s*(\\bpop|dump|sub|add|mul|div|mod|print|max|min|rev|more|swap\\b)\\s*(;.*)?");
     std::regex  regular_comment("^\\s*(;.*)?");
     std::regex  regular_exit("^\\s*exit\\s*(;.*)?");
 
@@ -132,8 +128,8 @@ int VM::check_other(std::string const &input)
     }
     else if (std::regex_match(input.c_str(), result, regular_comment))
         void(0);
-    // else if (std::regex_match(input.c_str(), result, regular_exit))
-    //     ex();
+    else if (std::regex_match(input.c_str(), result, regular_exit))
+        exiitt = 1;
     else
          Err("Error: invalid string");
     return (0);
